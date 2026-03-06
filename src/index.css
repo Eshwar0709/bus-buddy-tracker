@@ -1,8 +1,17 @@
+@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+/* Fix Leaflet tiles broken by Tailwind's global img styles */
+.leaflet-container img {
+  max-width: none !important;
+  max-height: none !important;
+}
+.leaflet-tile-pane {
+  z-index: 1 !important;
+}
 
 @layer base {
   :root {
