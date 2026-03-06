@@ -47,8 +47,8 @@ export default function LoginPage() {
     e.preventDefault();
     const success = register(regName, regEmail, regPassword, regRole);
     if (success) {
-      toast.success("Account created successfully!");
-      navigate("/dashboard");
+      toast.success("Account created! Please select your bus stop.");
+      navigate("/stops");
     } else {
       toast.error("Email already exists");
     }
