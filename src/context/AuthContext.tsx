@@ -12,10 +12,12 @@ import { DEFAULT_HOME } from "@/data/mockData";
 
 interface AuthContextType {
   user: User | null;
+  isNewUser: boolean;
   login: (email: string, password: string) => boolean;
   register: (name: string, email: string, password: string, role: UserRole) => boolean;
   logout: () => void;
   updateUserLocation: (home: LatLng, stopId: string) => void;
+  clearNewUser: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -29,6 +31,7 @@ const DEMO_ACCOUNTS = [
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isNewUser, setIsNewUser] = useState(false);
 
   // Load user from localStorage on mount
   useEffect(() => {
@@ -104,9 +107,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       selectedStopId: "stop-1",
     };
     setUser(u);
+    setIsNewUser(true);
     localStorage.setItem("bustrack_user", JSON.stringify(u));
     return true;
   };
+
+  const clearNewUser = () => setIsNewUser(false);
 
   const logout = () => {
     setUser(null);
@@ -121,7 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, updateUserLocation }}>
+    <AuthContext.Provider value={{ user, isNewUser, login, register, logout, updateUserLocation, clearNewUser }}>
       {children}
     </AuthContext.Provider>
   );

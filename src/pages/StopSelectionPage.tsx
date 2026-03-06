@@ -19,9 +19,11 @@ import { MOCK_ROUTES } from "@/data/mockData";
 import { useBusSimulation } from "@/hooks/useBusSimulation";
 import { MapPin, Home } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function StopSelectionPage() {
-  const { user, updateUserLocation } = useAuth();
+  const { user, updateUserLocation, isNewUser, clearNewUser } = useAuth();
+  const navigateTo = useNavigate();
   const { buses } = useBusSimulation();
 
   const [homeLat, setHomeLat] = useState(user?.homeLocation?.lat?.toString() || "40.7138");
@@ -38,7 +40,11 @@ export default function StopSelectionPage() {
       return;
     }
     updateUserLocation({ lat, lng }, selectedStopId);
-    toast.success("Location settings updated!");
+    toast.success("Location settings saved!");
+    if (isNewUser) {
+      clearNewUser();
+      navigateTo("/dashboard");
+    }
   };
 
   return (
