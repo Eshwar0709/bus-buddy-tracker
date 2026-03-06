@@ -65,12 +65,13 @@ const homeIcon = L.divIcon({
   iconAnchor: [10, 10],
 });
 
-// Component to auto-fit bounds
+// Component to auto-fit bounds only on initial mount
 function FitBounds({ bounds }: { bounds: L.LatLngBoundsExpression }) {
   const map = useMap();
   useEffect(() => {
     map.fitBounds(bounds, { padding: [30, 30] });
-  }, [map, bounds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map]);
   return null;
 }
 
