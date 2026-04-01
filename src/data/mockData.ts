@@ -152,10 +152,10 @@ export const MOCK_BUSES: Bus[] = [
   },
 ];
 
-// Default user home location (near Uppal, Hyderabad)
+// Default user home location (near Afzalgunj, Hyderabad)
 export const DEFAULT_HOME: { lat: number; lng: number } = {
-  lat: 17.3955,
-  lng: 78.5585,
+  lat: 17.3620,
+  lng: 78.4735,
 };
 
 // Walking speed in km/h (average person)
