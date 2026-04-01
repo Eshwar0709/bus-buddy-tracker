@@ -1,7 +1,7 @@
 /**
  * ============================================
  * STOP SELECTION PAGE
- * User picks home location and bus stop
+ * Two-step onboarding: Step 1 = Home location, Step 2 = Bus stop
  * ============================================
  */
 
@@ -17,7 +17,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import MapView from "@/components/MapView";
 import { MOCK_ROUTES } from "@/data/mockData";
 import { useBusSimulation } from "@/hooks/useBusSimulation";
-import { MapPin, Home } from "lucide-react";
+import { MapPin, Home, ArrowRight, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -26,19 +26,31 @@ export default function StopSelectionPage() {
   const navigateTo = useNavigate();
   const { buses } = useBusSimulation();
 
-  const [homeLat, setHomeLat] = useState(user?.homeLocation?.lat?.toString() || "40.7138");
-  const [homeLng, setHomeLng] = useState(user?.homeLocation?.lng?.toString() || "-74.007");
-  const [selectedStopId, setSelectedStopId] = useState(user?.selectedStopId || "stop-1");
+  const [step, setStep] = useState(1);
+  const [homeLat, setHomeLat] = useState(user?.homeLocation?.lat?.toString() || "17.3616");
+  const [homeLng, setHomeLng] = useState(user?.homeLocation?.lng?.toString() || "78.4727");
+  const [selectedStopId, setSelectedStopId] = useState(user?.selectedStopId || "stop-7");
 
   if (!user) return <Navigate to="/login" />;
 
-  const handleSave = () => {
+  const handleNextStep = () => {
     const lat = parseFloat(homeLat);
     const lng = parseFloat(homeLng);
     if (isNaN(lat) || isNaN(lng)) {
       toast.error("Please enter valid coordinates");
       return;
     }
+    if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+      toast.error("Coordinates are out of range");
+      return;
+    }
+    toast.success("Home location set! Now select your bus stop.");
+    setStep(2);
+  };
+
+  const handleSave = () => {
+    const lat = parseFloat(homeLat);
+    const lng = parseFloat(homeLng);
     updateUserLocation({ lat, lng }, selectedStopId);
     toast.success("Location settings saved!");
     if (isNewUser) {
@@ -50,94 +62,125 @@ export default function StopSelectionPage() {
   return (
     <div className="container py-8 space-y-6">
       <h1 className="font-display text-2xl font-bold">Location Setup</h1>
-      <p className="text-muted-foreground">Set your home location and select your bus stop.</p>
+
+      {/* Step indicator */}
+      <div className="flex items-center gap-3">
+        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${
+          step === 1 ? "bg-primary text-primary-foreground" : "bg-primary/20 text-primary"
+        }`}>
+          {step > 1 ? <CheckCircle className="h-4 w-4" /> : <span>1</span>}
+          Home Location
+        </div>
+        <ArrowRight className="h-4 w-4 text-muted-foreground" />
+        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${
+          step === 2 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+        }`}>
+          <span>2</span> Select Bus Stop
+        </div>
+      </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        {/* Settings */}
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Home className="h-5 w-5" /> Home Location
-              </CardTitle>
-              <CardDescription>Enter your home address or coordinates</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Home Address</Label>
-                <Input
-                  placeholder="e.g. Near Afzalgunj, Hyderabad"
-                  defaultValue="Near Afzalgunj, Hyderabad"
-                  readOnly
-                />
-                <p className="text-xs text-muted-foreground">Address lookup sets coordinates below</p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Latitude</Label>
-                  <Input value={homeLat} onChange={(e) => setHomeLat(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Longitude</Label>
-                  <Input value={homeLng} onChange={(e) => setHomeLng(e.target.value)} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <MapPin className="h-5 w-5" /> Select Bus Stop
-              </CardTitle>
-              <CardDescription>Choose which stop you typically use</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Select value={selectedStopId} onValueChange={setSelectedStopId}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {MOCK_STOPS.map((stop) => (
-                    <SelectItem key={stop.id} value={stop.id}>
-                      {stop.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Button onClick={handleSave} className="w-full">
-                Save Settings
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Stops list */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">All Stops</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {MOCK_STOPS.map((stop) => (
-                  <div
-                    key={stop.id}
-                    className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                      selectedStopId === stop.id
-                        ? "bg-primary/10 border border-primary/30"
-                        : "bg-secondary hover:bg-secondary/80"
-                    }`}
-                    onClick={() => setSelectedStopId(stop.id)}
-                  >
-                    <p className="font-medium text-sm">{stop.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {stop.location.lat.toFixed(4)}, {stop.location.lng.toFixed(4)}
-                    </p>
+          {/* STEP 1: Home Location */}
+          {step === 1 && (
+            <Card className="border-2 border-primary/30">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Home className="h-5 w-5" /> Step 1: Set Your Home Location
+                </CardTitle>
+                <CardDescription>
+                  Enter the latitude and longitude of your home. You can find these on Google Maps by right-clicking your location.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Latitude</Label>
+                    <Input
+                      value={homeLat}
+                      onChange={(e) => setHomeLat(e.target.value)}
+                      placeholder="e.g. 17.3616"
+                    />
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  <div className="space-y-2">
+                    <Label>Longitude</Label>
+                    <Input
+                      value={homeLng}
+                      onChange={(e) => setHomeLng(e.target.value)}
+                      placeholder="e.g. 78.4727"
+                    />
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Tip: Open Google Maps → right-click your home → copy coordinates
+                </p>
+                <Button onClick={handleNextStep} className="w-full">
+                  Next: Select Bus Stop <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* STEP 2: Bus Stop Selection */}
+          {step === 2 && (
+            <>
+              <Card className="bg-primary/5 border border-primary/20">
+                <CardContent className="py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                    <span className="text-sm font-medium">Home: {homeLat}, {homeLng}</span>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => setStep(1)}>Edit</Button>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 border-primary/30">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <MapPin className="h-5 w-5" /> Step 2: Select Your Bus Stop
+                  </CardTitle>
+                  <CardDescription>Choose the stop you typically board from</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Select value={selectedStopId} onValueChange={setSelectedStopId}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {MOCK_STOPS.map((stop) => (
+                        <SelectItem key={stop.id} value={stop.id}>
+                          {stop.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <div className="space-y-2">
+                    {MOCK_STOPS.map((stop) => (
+                      <div
+                        key={stop.id}
+                        className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                          selectedStopId === stop.id
+                            ? "bg-primary/10 border border-primary/30"
+                            : "bg-secondary hover:bg-secondary/80"
+                        }`}
+                        onClick={() => setSelectedStopId(stop.id)}
+                      >
+                        <p className="font-medium text-sm">{stop.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {stop.location.lat.toFixed(4)}, {stop.location.lng.toFixed(4)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Button onClick={handleSave} className="w-full">
+                    Save & Go to Dashboard <CheckCircle className="ml-2 h-4 w-4" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </>
+          )}
         </div>
 
         {/* Map */}
@@ -146,7 +189,7 @@ export default function StopSelectionPage() {
             buses={buses}
             stops={MOCK_STOPS}
             routes={MOCK_ROUTES}
-            homeLocation={{ lat: parseFloat(homeLat) || 40.7138, lng: parseFloat(homeLng) || -74.007 }}
+            homeLocation={{ lat: parseFloat(homeLat) || 17.3616, lng: parseFloat(homeLng) || 78.4727 }}
             selectedStopId={selectedStopId}
             height="600px"
           />
