@@ -2,93 +2,97 @@
  * ============================================
  * MOCK DATA
  * Sample buses, routes, and stops for simulation
- * City: Sample city centered around coordinates
+ * City: Hyderabad, Telangana, India (Uppal area)
  * ============================================
  */
 
 import { Bus, BusRoute, BusStop } from "@/types";
 
-// ---- BUS STOPS ----
+// ---- BUS STOPS (Uppal area, Hyderabad) ----
 export const MOCK_STOPS: BusStop[] = [
   {
     id: "stop-1",
-    name: "Central Station",
-    location: { lat: 40.7128, lng: -74.006 },
+    name: "Uppal Bus Stand",
+    location: { lat: 17.3950, lng: 78.5594 },
     routeIds: ["route-1", "route-2"],
   },
   {
     id: "stop-2",
-    name: "Market Square",
-    location: { lat: 40.7158, lng: -74.0015 },
+    name: "Uppal Metro Station",
+    location: { lat: 17.3988, lng: 78.5565 },
     routeIds: ["route-1"],
   },
   {
     id: "stop-3",
-    name: "University Campus",
-    location: { lat: 40.7195, lng: -73.9975 },
+    name: "Habsiguda",
+    location: { lat: 17.4060, lng: 78.5340 },
     routeIds: ["route-1", "route-3"],
   },
   {
     id: "stop-4",
-    name: "City Park",
-    location: { lat: 40.7225, lng: -74.004 },
+    name: "Nacharam",
+    location: { lat: 17.4110, lng: 78.5480 },
     routeIds: ["route-2"],
   },
   {
     id: "stop-5",
-    name: "Hospital",
-    location: { lat: 40.7105, lng: -74.0105 },
+    name: "Mallapur",
+    location: { lat: 17.4180, lng: 78.5620 },
     routeIds: ["route-2", "route-3"],
   },
   {
     id: "stop-6",
-    name: "Shopping Mall",
-    location: { lat: 40.718, lng: -74.009 },
+    name: "Tarnaka",
+    location: { lat: 17.4190, lng: 78.5210 },
     routeIds: ["route-3"],
   },
 ];
 
-// ---- BUS ROUTES ----
+// ---- BUS ROUTES (Hyderabad / Uppal area) ----
 export const MOCK_ROUTES: BusRoute[] = [
   {
     id: "route-1",
-    name: "Blue Line",
+    name: "Blue Line - Uppal to Habsiguda",
     color: "#3b82f6",
     stops: ["stop-1", "stop-2", "stop-3"],
     path: [
-      { lat: 40.71, lng: -74.01 },
-      { lat: 40.7128, lng: -74.006 },
-      { lat: 40.7145, lng: -74.003 },
-      { lat: 40.7158, lng: -74.0015 },
-      { lat: 40.7175, lng: -73.999 },
-      { lat: 40.7195, lng: -73.9975 },
+      { lat: 17.3920, lng: 78.5620 },
+      { lat: 17.3950, lng: 78.5594 },
+      { lat: 17.3970, lng: 78.5580 },
+      { lat: 17.3988, lng: 78.5565 },
+      { lat: 17.4010, lng: 78.5500 },
+      { lat: 17.4030, lng: 78.5440 },
+      { lat: 17.4060, lng: 78.5340 },
     ],
   },
   {
     id: "route-2",
-    name: "Green Line",
+    name: "Green Line - Uppal to Mallapur",
     color: "#22c55e",
     stops: ["stop-1", "stop-4", "stop-5"],
     path: [
-      { lat: 40.7085, lng: -74.012 },
-      { lat: 40.7105, lng: -74.0105 },
-      { lat: 40.7128, lng: -74.006 },
-      { lat: 40.716, lng: -74.005 },
-      { lat: 40.72, lng: -74.0045 },
-      { lat: 40.7225, lng: -74.004 },
+      { lat: 17.3950, lng: 78.5594 },
+      { lat: 17.3980, lng: 78.5590 },
+      { lat: 17.4020, lng: 78.5540 },
+      { lat: 17.4060, lng: 78.5500 },
+      { lat: 17.4110, lng: 78.5480 },
+      { lat: 17.4150, lng: 78.5550 },
+      { lat: 17.4180, lng: 78.5620 },
     ],
   },
   {
     id: "route-3",
-    name: "Red Line",
+    name: "Red Line - Mallapur to Tarnaka",
     color: "#ef4444",
     stops: ["stop-5", "stop-6", "stop-3"],
     path: [
-      { lat: 40.7105, lng: -74.0105 },
-      { lat: 40.714, lng: -74.01 },
-      { lat: 40.718, lng: -74.009 },
-      { lat: 40.719, lng: -74.005 },
-      { lat: 40.7195, lng: -73.9975 },
+      { lat: 17.4180, lng: 78.5620 },
+      { lat: 17.4170, lng: 78.5550 },
+      { lat: 17.4160, lng: 78.5450 },
+      { lat: 17.4180, lng: 78.5350 },
+      { lat: 17.4190, lng: 78.5210 },
+      { lat: 17.4130, lng: 78.5280 },
+      { lat: 17.4060, lng: 78.5340 },
     ],
   },
 ];
@@ -100,7 +104,7 @@ export const MOCK_BUSES: Bus[] = [
     name: "Bus A1",
     routeId: "route-1",
     speed: 30,
-    currentLocation: { lat: 40.711, lng: -74.009 },
+    currentLocation: { lat: 17.3940, lng: 78.5600 },
     status: "active",
     driverId: "driver-1",
   },
@@ -109,7 +113,7 @@ export const MOCK_BUSES: Bus[] = [
     name: "Bus A2",
     routeId: "route-1",
     speed: 25,
-    currentLocation: { lat: 40.716, lng: -74.002 },
+    currentLocation: { lat: 17.4020, lng: 78.5480 },
     status: "active",
     driverId: "driver-2",
   },
@@ -118,7 +122,7 @@ export const MOCK_BUSES: Bus[] = [
     name: "Bus B1",
     routeId: "route-2",
     speed: 35,
-    currentLocation: { lat: 40.709, lng: -74.011 },
+    currentLocation: { lat: 17.3960, lng: 78.5590 },
     status: "active",
     driverId: null,
   },
@@ -127,7 +131,7 @@ export const MOCK_BUSES: Bus[] = [
     name: "Bus C1",
     routeId: "route-3",
     speed: 28,
-    currentLocation: { lat: 40.712, lng: -74.01 },
+    currentLocation: { lat: 17.4175, lng: 78.5600 },
     status: "active",
     driverId: null,
   },
@@ -136,16 +140,16 @@ export const MOCK_BUSES: Bus[] = [
     name: "Bus B2",
     routeId: "route-2",
     speed: 20,
-    currentLocation: { lat: 40.721, lng: -74.0042 },
+    currentLocation: { lat: 17.4140, lng: 78.5530 },
     status: "delayed",
     driverId: null,
   },
 ];
 
-// Default user home location
+// Default user home location (near Uppal, Hyderabad)
 export const DEFAULT_HOME: { lat: number; lng: number } = {
-  lat: 40.7138,
-  lng: -74.0070,
+  lat: 17.3955,
+  lng: 78.5585,
 };
 
 // Walking speed in km/h (average person)
