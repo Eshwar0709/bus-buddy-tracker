@@ -101,6 +101,21 @@ export const MOCK_ROUTES: BusRoute[] = [
       { lat: 17.4060, lng: 78.5340 },
     ],
   },
+  {
+    id: "route-4",
+    name: "Yellow Line - Afzalgunj to Uppal",
+    color: "#eab308",
+    stops: ["stop-7", "stop-3", "stop-1"],
+    path: [
+      { lat: 17.3616, lng: 78.4727 },
+      { lat: 17.3700, lng: 78.4850 },
+      { lat: 17.3780, lng: 78.5000 },
+      { lat: 17.3860, lng: 78.5150 },
+      { lat: 17.4060, lng: 78.5340 },
+      { lat: 17.4010, lng: 78.5450 },
+      { lat: 17.3950, lng: 78.5594 },
+    ],
+  },
 ];
 
 // ---- BUSES ----
