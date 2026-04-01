@@ -46,6 +46,12 @@ export const MOCK_STOPS: BusStop[] = [
     location: { lat: 17.4190, lng: 78.5210 },
     routeIds: ["route-3"],
   },
+  {
+    id: "stop-7",
+    name: "Afzalgunj",
+    location: { lat: 17.3616, lng: 78.4727 },
+    routeIds: ["route-1", "route-4"],
+  },
 ];
 
 // ---- BUS ROUTES (Hyderabad / Uppal area) ----
