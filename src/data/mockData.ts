@@ -165,6 +165,15 @@ export const MOCK_BUSES: Bus[] = [
     status: "delayed",
     driverId: null,
   },
+  {
+    id: "bus-6",
+    name: "Bus D1",
+    routeId: "route-4",
+    speed: 30,
+    currentLocation: { lat: 17.3700, lng: 78.4850 },
+    status: "active",
+    driverId: null,
+  },
 ];
 
 // Default user home location (near Afzalgunj, Hyderabad)
