@@ -46,6 +46,12 @@ export const MOCK_STOPS: BusStop[] = [
     location: { lat: 17.4190, lng: 78.5210 },
     routeIds: ["route-3"],
   },
+  {
+    id: "stop-7",
+    name: "Afzalgunj",
+    location: { lat: 17.3616, lng: 78.4727 },
+    routeIds: ["route-1", "route-4"],
+  },
 ];
 
 // ---- BUS ROUTES (Hyderabad / Uppal area) ----
@@ -93,6 +99,21 @@ export const MOCK_ROUTES: BusRoute[] = [
       { lat: 17.4190, lng: 78.5210 },
       { lat: 17.4130, lng: 78.5280 },
       { lat: 17.4060, lng: 78.5340 },
+    ],
+  },
+  {
+    id: "route-4",
+    name: "Yellow Line - Afzalgunj to Uppal",
+    color: "#eab308",
+    stops: ["stop-7", "stop-3", "stop-1"],
+    path: [
+      { lat: 17.3616, lng: 78.4727 },
+      { lat: 17.3700, lng: 78.4850 },
+      { lat: 17.3780, lng: 78.5000 },
+      { lat: 17.3860, lng: 78.5150 },
+      { lat: 17.4060, lng: 78.5340 },
+      { lat: 17.4010, lng: 78.5450 },
+      { lat: 17.3950, lng: 78.5594 },
     ],
   },
 ];
@@ -144,12 +165,21 @@ export const MOCK_BUSES: Bus[] = [
     status: "delayed",
     driverId: null,
   },
+  {
+    id: "bus-6",
+    name: "Bus D1",
+    routeId: "route-4",
+    speed: 30,
+    currentLocation: { lat: 17.3700, lng: 78.4850 },
+    status: "active",
+    driverId: null,
+  },
 ];
 
-// Default user home location (near Uppal, Hyderabad)
+// Default user home location (near Afzalgunj, Hyderabad)
 export const DEFAULT_HOME: { lat: number; lng: number } = {
-  lat: 17.3955,
-  lng: 78.5585,
+  lat: 17.3620,
+  lng: 78.4735,
 };
 
 // Walking speed in km/h (average person)

@@ -60,9 +60,18 @@ export default function StopSelectionPage() {
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Home className="h-5 w-5" /> Home Location
               </CardTitle>
-              <CardDescription>Enter your home coordinates (or click on the map)</CardDescription>
+              <CardDescription>Enter your home address or coordinates</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>Home Address</Label>
+                <Input
+                  placeholder="e.g. Near Afzalgunj, Hyderabad"
+                  defaultValue="Near Afzalgunj, Hyderabad"
+                  readOnly
+                />
+                <p className="text-xs text-muted-foreground">Address lookup sets coordinates below</p>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Latitude</Label>
