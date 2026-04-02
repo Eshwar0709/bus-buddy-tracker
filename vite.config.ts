@@ -20,6 +20,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    exclude: ["react-leaflet", "@react-leaflet/core", "leaflet"],
+    include: ["react", "react-dom", "react-leaflet", "@react-leaflet/core", "leaflet"],
   },
 }));
